@@ -12,9 +12,8 @@
         @foreach (var prenotazione in ViewBag.listaPrenotati)
         {
             <option value="@prenotazione.IdPrenotazione">@prenotazione.Cognome @prenotazione.Nome</option>
-
         }
     </select>
-    <button>Checkout</button>
+    <button class="btn btn-warning">Checkout</button>
 }
 

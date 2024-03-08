@@ -3,11 +3,12 @@
     ViewBag.Title = "LoggedIn";
 }
 
-<h2>LoggedIn</h2>
+<h2>Benvenuto</h2>
 
 
 <p>A quale funzionalità vuoi accedere?</p>
-@Html.ActionLink("Aggiungi Prenotazione", "NuovaPrenotazione", "Prenotazioni")
-@Html.ActionLink("Servizi aggiuntivi prenotati", "NuovoServizio", "Servizi")
-@Html.ActionLink("Effettua il checkout", "EffettuaCheckout", "Checkout")
+@Html.ActionLink("Aggiungi Prenotazione", "NuovaPrenotazione", "Prenotazioni", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Ricerca Prenotazioni", "RicercaPrenotazioni", "Prenotazioni", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Servizi aggiuntivi prenotati", "NuovoServizio", "Servizi", null, new { @class = "btn btn-secondary" })
+@Html.ActionLink("Effettua il checkout", "EffettuaCheckout", "Checkout", null, new { @class = "btn btn-warning" })
 
