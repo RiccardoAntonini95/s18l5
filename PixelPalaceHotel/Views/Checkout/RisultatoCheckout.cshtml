@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "RisultatoCheckout";
+}
+
+<h2>Risultato Checkout</h2>
+
+    <table class="table">
+        <tr>
+            <th scope="col">Numero Camera</th>
+            <th scope="col">Inizio Soggiorno</th>
+            <th scope="col">Fine Soggiorno</th>
+            <th scope="col">Tipo Servizio</th>
+            <th scope="col">Data Servizio</th>
+            <th scope="col">Totale Importo</th>
+        </tr>
+        @foreach (var riepilogo in Model)
+        {
+            <tr>
+                <td>@riepilogo.NumeroCamera</td>
+                <td>@riepilogo.InizioSoggiorno</td>
+                <td>@riepilogo.FineSoggiorno</td>
+                <td>@riepilogo.TipoServizio</td>
+                <td>@riepilogo.DataServizio</td>
+                <td>@riepilogo.TotaleImporto</td>
+            </tr>
+        }
+
+    </table>
+

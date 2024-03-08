@@ -84,7 +84,6 @@ namespace PixelPalaceHotel.Controllers
                     return View("error");
                 }
                 finally { conn.Close(); }
-                return View();
                 return RedirectToAction("LoggedIn", "Home");
             }
             return View();
