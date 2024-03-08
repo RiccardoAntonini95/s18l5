@@ -53,7 +53,7 @@ namespace PixelPalaceHotel.Controllers
                 }
                 finally { conn.Close(); }
             }
-             return View("Index");
+             return View("LoggedIn");
         }
 
         //questa è la vera home page
