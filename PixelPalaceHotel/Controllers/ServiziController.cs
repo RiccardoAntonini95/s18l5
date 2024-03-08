@@ -44,6 +44,26 @@ namespace PixelPalaceHotel.Controllers
         {
             string connectionString = ConfigurationManager.ConnectionStrings["HotelDb"].ToString();
             var conn = new SqlConnection(connectionString);
+            List<Prenotazione> listaPrenotati = new List<Prenotazione>();
+            conn.Open();
+            var commandList = new SqlCommand("SELECT * FROM Prenotazioni", conn);
+            var readerList = commandList.ExecuteReader();
+
+            if (readerList.HasRows)
+            {
+                while (readerList.Read())
+                {
+                    var prenotazione = new Prenotazione()
+                    {
+                        IdPrenotazione = (int)readerList["IdPrenotazione"],
+                        Cognome = (string)readerList["Cognome"],
+                        Nome = (string)readerList["Nome"]
+                    };
+                    listaPrenotati.Add(prenotazione);
+                }
+                ViewBag.listaPrenotati = listaPrenotati;
+                conn.Close();
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -64,6 +84,7 @@ namespace PixelPalaceHotel.Controllers
                     return View("error");
                 }
                 finally { conn.Close(); }
+                return View();
                 return RedirectToAction("LoggedIn", "Home");
             }
             return View();

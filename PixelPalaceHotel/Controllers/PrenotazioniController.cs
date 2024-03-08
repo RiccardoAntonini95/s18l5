@@ -46,7 +46,29 @@ namespace PixelPalaceHotel.Controllers
         {
             string connectionString = ConfigurationManager.ConnectionStrings["HotelDb"].ToString();
             var conn = new SqlConnection(connectionString);
-            if(ModelState.IsValid)
+            List<Camera> listaCamere = new List<Camera>();
+            conn.Open();
+            var commandList = new SqlCommand("SELECT * FROM Camere", conn);
+            var readerList = commandList.ExecuteReader();
+
+            if (readerList.HasRows)
+            {
+                while (readerList.Read())
+                {
+                    var camera = new Camera()
+                    {
+                        IdCamera = (int)readerList["IdCamera"],
+                        NumeroCamera = (int)readerList["NumeroCamera"],
+                        Descrizione = (string)readerList["Descrizione"],
+                        Tipologia = (string)readerList["Tipologia"]
+                    };
+                    listaCamere.Add(camera);
+                }
+                ViewBag.listaCamere = listaCamere;
+                conn.Close();
+            }
+
+            if (ModelState.IsValid)
             {
                 try
                 {
