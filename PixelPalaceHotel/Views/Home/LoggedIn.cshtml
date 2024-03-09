@@ -11,4 +11,60 @@
 @Html.ActionLink("Ricerca Prenotazioni", "RicercaPrenotazioni", "Prenotazioni", null, new { @class = "btn btn-primary" })
 @Html.ActionLink("Servizi aggiuntivi prenotati", "NuovoServizio", "Servizi", null, new { @class = "btn btn-secondary" })
 @Html.ActionLink("Effettua il checkout", "EffettuaCheckout", "Checkout", null, new { @class = "btn btn-warning" })
+<div id="listaPrenotatiCodFis"></div>
+<button id="btn-carica-prodotti">Carica Prodotti</button>
+
+
+<button class="btn btn-outline-dark" id="btnPensioneCompleta">Ottieni pensioni complete</button>
+<p>Pensioni complete: <span id="pensioniComplete"></span></p>
+
+
+
+
+
+@section scripts {
+
+    <script>
+        document.querySelector("#btnPensioneCompleta").addEventListener("click", function () {
+          $.ajax({
+          url: '/Home/GetTotalePensioneCompleta',
+          type: 'GET',
+          dataType: 'json',
+          success: function (data) {
+         // Manipola il valore restituito, ad esempio, aggiornando un elemento HTML
+          $('#pensioniComplete').text(data);
+          },
+          error: function (error) {
+          console.error(error);
+          }
+          })
+        })
+
+    </script>
+    }
+
+
+
+@*<script>
+        document.getElementById("btn-carica-prodotti").addEventListener("click", function() {
+            // Effettua una richiesta AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/Home/GetPrenotatiCodiceFiscale", true); // Assicurati che l'URL sia corretto
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Quando la richiesta è completata e ha successo
+                    var dati = JSON.parse(xhr.responseText);
+
+                    // Mostra i dati dei prodotti nell'elemento HTML
+                    var listaPrenotatiDiv = document.getElementById("listaPrenotatiCodFis");
+                    listaProdottiDiv.innerHTML = ""; // Cancella eventuali dati precedenti
+
+                    prenotati.forEach(function (prenotato) {
+                        listaPrenotatiDiv.innerHTML += "<p>" + prenotato.nome + "</p>"; // Aggiungi i dati dei prodotti al div
+                    });
+                }
+            };
+            xhr.send();
+        });
+    </script>*@
 
