@@ -190,7 +190,6 @@
     <Content Include="Views\Servizi\NuovoServizio.cshtml" />
     <Content Include="Views\Checkout\EffettuaCheckout.cshtml" />
     <Content Include="Views\Checkout\RisultatoCheckout.cshtml" />
-    <Content Include="Views\Prenotazioni\RicercaPrenotazioni.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

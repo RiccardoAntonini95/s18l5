@@ -3,20 +3,28 @@
     ViewBag.Title = "LoggedIn";
 }
 
-<h2>Benvenuto</h2>
+<h2 class="display-1 fw-bold">Benvenuto</h2>
 
 
-<p>A quale funzionalità vuoi accedere?</p>
-@Html.ActionLink("Aggiungi Prenotazione", "NuovaPrenotazione", "Prenotazioni", null, new { @class = "btn btn-primary" })
-@Html.ActionLink("Ricerca Prenotazioni", "RicercaPrenotazioni", "Prenotazioni", null, new { @class = "btn btn-primary" })
-@Html.ActionLink("Servizi aggiuntivi prenotati", "NuovoServizio", "Servizi", null, new { @class = "btn btn-secondary" })
-@Html.ActionLink("Effettua il checkout", "EffettuaCheckout", "Checkout", null, new { @class = "btn btn-warning" })
+<p class="display-6">A quale funzionalità vuoi accedere?</p>
+<div class="d-flex my-3">
+    @Html.ActionLink("Aggiungi Prenotazione", "NuovaPrenotazione", "Prenotazioni", null, new { @class = "btn btn-outline-primary fw-bold" })
+    @Html.ActionLink("Servizi aggiuntivi prenotati", "NuovoServizio", "Servizi", null, new { @class = "btn btn-outline-success fw-bold" })
+    @Html.ActionLink("Effettua il checkout", "EffettuaCheckout", "Checkout", null, new { @class = "btn btn-warning fw-bold" })
+</div>
+<p class="display-6">Ottieni prenotazioni tramite un codice fiscale:</p>
+<div class="d-flex my-3">
+    <input type="text" id="codFisInput" placeholder="Inserisci un codice fiscale e premi il bottone" />
+    <button id="btnCodiceFiscale" class="btn btn-info fw-bold">Ottieni prenotazioni</button>
+</div>
+<p class="display-6">Ottieni il totale dei prenotati con pensione completa:</p>
+<button class="btn btn-dark" id="btnPensioneCompleta">Ottieni pensioni complete</button>
 <div id="listaPrenotatiCodFis"></div>
-<button id="btn-carica-prodotti">Carica Prodotti</button>
+<div id="prenotatiCodDiv"></div>
 
 
-<button class="btn btn-outline-dark" id="btnPensioneCompleta">Ottieni pensioni complete</button>
-<p>Pensioni complete: <span id="pensioniComplete"></span></p>
+<p class="fw-bold">Pensioni complete: <span id="pensioniComplete" class="fs-5"></span> prenotati</p>
+
 
 
 
@@ -25,46 +33,55 @@
 @section scripts {
 
     <script>
-        document.querySelector("#btnPensioneCompleta").addEventListener("click", function () {
-          $.ajax({
-          url: '/Home/GetTotalePensioneCompleta',
-          type: 'GET',
-          dataType: 'json',
-          success: function (data) {
-         // Manipola il valore restituito, ad esempio, aggiornando un elemento HTML
-          $('#pensioniComplete').text(data);
-          },
-          error: function (error) {
-          console.error(error);
-          }
-          })
+        //richiesta codice fiscale
+        document.querySelector("#btnCodiceFiscale").addEventListener("click", function () {
+            var codiceFiscale = document.querySelector("#codFisInput").value;
+            $.ajax({
+                url: '/Home/GetPrenotatiCodiceFiscale',
+                type: 'GET',
+                data: { codiceFiscale: codiceFiscale },
+                dataType: 'json',
+                success: function (data) {
+                    var html = ''; // Stringa HTML per contenere il risultato formattato
+                    data.forEach(function (prenotazione) {
+                        html += '<div>';
+                        html += '<p class="fw-bold">'+ 'Cliente:' +'</p>';
+                        html += '<p>Codice Fiscale: ' + prenotazione.CodiceFiscale + '</p>';
+                        html += '<p>Cognome: ' + prenotazione.Cognome + '</p>';
+                        html += '<p>Nome: ' + prenotazione.Nome + '</p>';
+                        html += '<p>Città: ' + prenotazione.Citta + '</p>';
+                        html += '<p>Cellulare: ' + prenotazione.Cell + '</p>';
+                        html += '<p>Data Prenotazione: ' + new Date(parseInt(prenotazione.DataPrenotazione.substr(6))) + '</p>';
+                        html += '<p>Inizio Soggiorno: ' + new Date(parseInt(prenotazione.InizioSoggiorno.substr(6))) + '</p>';
+                        html += '<p>Fine Soggiorno: ' + new Date(parseInt(prenotazione.FineSoggiorno.substr(6))) + '</p>';
+                        html += '</div>';
+                    });
+                    $('#prenotatiCodDiv').html(html);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            })
         })
 
-    </script>
-    }
 
 
-
-@*<script>
-        document.getElementById("btn-carica-prodotti").addEventListener("click", function() {
-            // Effettua una richiesta AJAX
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/Home/GetPrenotatiCodiceFiscale", true); // Assicurati che l'URL sia corretto
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // Quando la richiesta è completata e ha successo
-                    var dati = JSON.parse(xhr.responseText);
-
-                    // Mostra i dati dei prodotti nell'elemento HTML
-                    var listaPrenotatiDiv = document.getElementById("listaPrenotatiCodFis");
-                    listaProdottiDiv.innerHTML = ""; // Cancella eventuali dati precedenti
-
-                    prenotati.forEach(function (prenotato) {
-                        listaPrenotatiDiv.innerHTML += "<p>" + prenotato.nome + "</p>"; // Aggiungi i dati dei prodotti al div
-                    });
+        // richiesta pensione completa
+        document.querySelector("#btnPensioneCompleta").addEventListener("click", function () {
+            $.ajax({
+                url: '/Home/GetTotalePensioneCompleta',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#pensioniComplete').text(data);
+                },
+                error: function (error) {
+                    console.error(error);
                 }
-            };
-            xhr.send();
-        });
-    </script>*@
+            })
+        })
+    </script>
+}
+
+
 

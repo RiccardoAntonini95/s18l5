@@ -105,9 +105,5 @@ namespace PixelPalaceHotel.Controllers
 
         }
 
-        public ActionResult RicercaPrenotazioni()
-        {
-            return View();
-        }
     }
 }

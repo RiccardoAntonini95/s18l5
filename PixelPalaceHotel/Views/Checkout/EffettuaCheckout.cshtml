@@ -2,18 +2,20 @@
 @{
     ViewBag.Title = "EffettuaCheckout";
 }
+<div class="text-center">
+    <h2>Effettua Checkout</h2>
 
-<h2>Effettua Checkout</h2>
+    @using (Html.BeginForm("RisultatoCheckout", "Checkout"))
+    {
+        <label for="IdPrenotazione">Effettua il checkout: </label>
+        <select name="IdPrenotazione">
+            @foreach (var prenotazione in ViewBag.listaPrenotati)
+            {
+                <option value="@prenotazione.IdPrenotazione">@prenotazione.Cognome @prenotazione.Nome</option>
+            }
+        </select>
+        <button class="btn btn-warning">Checkout</button>
+    }
+</div>
 
-@using (Html.BeginForm("RisultatoCheckout", "Checkout"))
-{
-    <label for="IdPrenotazione">Effettua il checkout: </label>
-    <select name="IdPrenotazione">
-        @foreach (var prenotazione in ViewBag.listaPrenotati)
-        {
-            <option value="@prenotazione.IdPrenotazione">@prenotazione.Cognome @prenotazione.Nome</option>
-        }
-    </select>
-    <button class="btn btn-warning">Checkout</button>
-}
 
